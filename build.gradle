@@ -1,0 +1,31 @@
+plugins {
+	id "com.moowork.node" version "1.2.0"
+}
+
+node {
+     download = true
+}
+
+task build
+
+task zip(type: Zip) {
+     from('.') {
+	include "*"
+	include "data/**"
+	include "bin/**"
+	include "routes/**"
+	include "public/**"
+	include "views/**"
+	include "node_modules/**"
+     }
+     destinationDir(file("dist"))
+     baseName("trainSchedule")
+}
+
+build.dependsOn zip
+zip.dependsOn npm_build
+build.dependsOn npm_build
+npm_build.dependsOn npmInstall
+npm_build.dependsOn npm_test
+npm_test.dependsOn npmInstall
+
